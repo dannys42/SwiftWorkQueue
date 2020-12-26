@@ -1,5 +1,5 @@
 //
-//  WorkQueueDispatchItem.swift
+//  WorkQueueRunLoopItem.swift
 //  
 //
 //  Created by Danny Sung on 12/22/2020.
@@ -41,7 +41,6 @@ public class WorkQueueRunLoopCancellableItem: WorkQueueRunLoopItem, WorkQueueCan
 
         return self.timer.isValid
     }
-
 
 }
 

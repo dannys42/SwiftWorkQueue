@@ -19,12 +19,15 @@ let package = Package(
                  targets: ["WorkQueueOperation"]),
         .library(name: "WorkQueueRunLoop",
                  targets: ["WorkQueueRunLoop"]),
+        .library(name: "WorkQueueNIO",
+                 targets: ["WorkQueueNIO"]),
         .library(name: "WorkQueueTestUtilities",
                  targets: ["WorkQueueTestUtilities"]),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
+        .package(url: "https://github.com/apple/swift-nio", from: "2.0.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -41,6 +44,10 @@ let package = Package(
         .target(
             name: "WorkQueueRunLoop",
             dependencies: [ "WorkQueue" ]),
+        .target(
+            name: "WorkQueueNIO",
+            dependencies: [ "WorkQueue", .product(name: "NIO", package: "swift-nio") ]),
+
         .target(name: "WorkQueueTestUtilities",
                 dependencies: [ "WorkQueue" ]),
 
@@ -50,6 +57,9 @@ let package = Package(
         .testTarget(
             name: "WorkQueueDispatchTests",
             dependencies: [ "WorkQueue", "WorkQueueDispatch", "WorkQueueTestUtilities" ]),
+        .testTarget(
+            name: "WorkQueueNIOTests",
+            dependencies: [ "WorkQueue", "WorkQueueNIO", "WorkQueueTestUtilities" ]),
         .testTarget(
             name: "WorkQueueOperationTests",
             dependencies: [ "WorkQueue", "WorkQueueOperation", "WorkQueueTestUtilities" ]),
