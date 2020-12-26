@@ -19,6 +19,8 @@ let package = Package(
                  targets: ["WorkQueueOperation"]),
         .library(name: "WorkQueueRunLoop",
                  targets: ["WorkQueueRunLoop"]),
+        .library(name: "WorkQueueTestUtilities",
+                 targets: ["WorkQueueTestUtilities"]),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -39,8 +41,20 @@ let package = Package(
         .target(
             name: "WorkQueueRunLoop",
             dependencies: [ "WorkQueue" ]),
+        .target(name: "WorkQueueTestUtilities",
+                dependencies: [ "WorkQueue" ]),
+
         .testTarget(
             name: "WorkQueueTests",
             dependencies: ["WorkQueue"]),
+        .testTarget(
+            name: "WorkQueueDispatchTests",
+            dependencies: [ "WorkQueue", "WorkQueueDispatch", "WorkQueueTestUtilities" ]),
+        .testTarget(
+            name: "WorkQueueOperationTests",
+            dependencies: [ "WorkQueue", "WorkQueueOperation", "WorkQueueTestUtilities" ]),
+        .testTarget(
+            name: "WorkQueueRunLoopTests",
+            dependencies: [ "WorkQueue", "WorkQueueRunLoop", "WorkQueueTestUtilities" ]),
     ]
 )

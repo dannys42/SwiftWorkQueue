@@ -53,7 +53,7 @@ public class WorkQueueOperation: WorkQueue {
 }
 
 extension WorkQueueOperation: WorkQueueCancellable {
-    public func async(w_ block: @escaping () -> Void) -> WorkQueueCancellableItem {
+    public func async(_ block: @escaping () -> Void) -> WorkQueueCancellableItem {
         let op = Operation()
         op.name = "\(Self.self).\(#function).\(#line)"
         op.completionBlock = block

@@ -8,7 +8,7 @@
 import Foundation
 import WorkQueue
 
-public class WorkQueueRunLoop: WorkQueueCancellable {
+public class WorkQueueRunLoop: WorkQueue {
     public let runLoop: RunLoop
     public let mode: RunLoop.Mode
 
@@ -30,6 +30,9 @@ public class WorkQueueRunLoop: WorkQueueCancellable {
     }
 }
 
+extension WorkQueueRunLoop: WorkQueueCancellable {
+    
+}
 
 extension WorkQueueRunLoop: WorkQueueDeferrable {
     public func asyncAfter(timeInterval: TimeInterval, execute block: @escaping () -> Void) -> WorkQueueItem {

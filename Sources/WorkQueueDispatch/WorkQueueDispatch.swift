@@ -15,7 +15,7 @@ public class WorkQueueDispatch: WorkQueue {
         self.dispatchQueue = queue
     }
 
-    convenience init(label: String) {
+    public convenience init(label: String) {
         self.init(queue: DispatchQueue(label: label))
     }
 }
@@ -33,7 +33,7 @@ public class WorkQueueDispatchCancellableItem: WorkQueueDispatchItem, WorkQueueC
 extension WorkQueueDispatch: WorkQueueCancellable {
     public func async(_ block: @escaping () -> Void) -> WorkQueueCancellableItem {
 
-        let state = WorkQueueDispatchItemState()
+        let state = WorkQueueItemState()
 
         let workItem = DispatchWorkItem() {
             state.isExecuting = true

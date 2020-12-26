@@ -11,7 +11,7 @@ import WorkQueue
 extension WorkQueueDispatch: WorkQueueDeferrable {
     public func asyncAfter(timeInterval: TimeInterval, execute block: @escaping () -> Void) -> WorkQueueItem {
 
-        let state = WorkQueueDispatchItemState()
+        let state = WorkQueueItemState()
 
         let workItem = DispatchWorkItem() {
             state.isExecuting = true
