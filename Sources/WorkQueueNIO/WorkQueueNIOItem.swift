@@ -29,9 +29,6 @@ public class WorkQueueNIOItem: WorkQueueItem {
     public var isFinished: Bool {
         return self.state.isFinished
     }
-}
-
-public class WorkQueueNIOCancellableItem: WorkQueueNIOItem, WorkQueueCancellableItem {
 
     public func cancel() {
         self.didCancel = true

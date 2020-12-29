@@ -24,5 +24,13 @@ public class WorkQueueDispatchItem: WorkQueueItem {
     public var isFinished: Bool {
         return self.state.isFinished
     }
+
+    public func cancel() {
+        self.workItem.cancel()
+    }
+
+    public var isCancelled: Bool {
+        return self.workItem.isCancelled
+    }
 }
 

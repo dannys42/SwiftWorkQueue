@@ -49,7 +49,7 @@ open class WorkQueueTestCommon: XCTestCase {
         XCTAssertEqual(executeCount, expectedCount, "Should have execited block exactly once")
     }
 
-    public func testThat_BlockExecutes_ExactlyOnce_AfterTime() throws {
+    public func testThat_DelayedBlockExecutes_ExactlyOnce() throws {
         guard let workQueue = self.workQueue as? WorkQueueDeferrable else {
             _ = XCTSkip("This test is only valid for WorkQueueDeferrable WorkQueues.")
             return
@@ -77,6 +77,42 @@ open class WorkQueueTestCommon: XCTestCase {
         XCTAssertEqual(waitResult, .success, "Should not have timed out.")
         XCTAssertEqual(executeCount, expectedCount, "Should have execited block exactly once")
         XCTAssert(duration > delayTime, "Should not have executed in less than \(delayTime) seconds.")
+
+        if duration > maxTime {
+            print("warning: duration > \(maxTime) seconds.  While there is no guarantee of execution time, this may need to be looked at.")
+        }
+    }
+
+    public func testThat_DelayedBlock_DoesNotExecute_WhenCancelled() throws {
+        guard let workQueue = self.workQueue as? WorkQueueDeferrable else {
+            _ = XCTSkip("This test is only valid for WorkQueueDeferrable WorkQueues.")
+            return
+        }
+
+        let delayTime: TimeInterval = 1.25
+        let timeout: TimeInterval = delayTime + 3
+        let maxTime = timeout + 3
+        let startTimestamp = Date().timeIntervalSince1970
+        var endTimeStamp: TimeInterval = .nan
+        let expectedCount = 0
+        var executeCount = 0
+
+        self.willPerformAsync()
+        let workItem = workQueue.asyncAfter(timeInterval: delayTime) {
+            defer { self.didPerformAsync() }
+            executeCount += 1
+            endTimeStamp = Date().timeIntervalSince1970
+            Thread.sleep(forTimeInterval: delayTime)
+        }
+
+        workItem.cancel()
+
+        let waitResult = self.waitForAsyncComplete(timeout)
+        let duration = endTimeStamp - startTimestamp
+
+        XCTAssertEqual(waitResult, .timedOut, "Should not have executed block.")
+        XCTAssertEqual(executeCount, expectedCount, "Should not have executed the block at all")
+        XCTAssert(endTimeStamp.isNaN, "Should not have executed block.")
 
         if duration > maxTime {
             print("warning: duration > \(maxTime) seconds.  While there is no guarantee of execution time, this may need to be looked at.")

@@ -28,7 +28,7 @@ extension WorkQueueDispatch: WorkQueueDeferrable {
             self.dispatchQueue.asyncAfter(deadline: deadline, execute: workItem)
         }
 
-        return WorkQueueDispatchCancellableItem(workItem: workItem, state: state)
+        return WorkQueueDispatchItem(workItem: workItem, state: state)
     }
 
 

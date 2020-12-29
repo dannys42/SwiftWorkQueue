@@ -22,9 +22,6 @@ public class WorkQueueOperationItem: WorkQueueItem {
     public var isFinished: Bool {
         return self.operation.isFinished
     }
-}
-
-public class WorkQueueOperationCancellableItem: WorkQueueOperationItem, WorkQueueCancellableItem {
 
     public func cancel() {
         self.operation.cancel()
@@ -50,15 +47,13 @@ public class WorkQueueOperation: WorkQueue {
         self.init(operationQueue: opQ)
     }
 
-}
 
-extension WorkQueueOperation: WorkQueueCancellable {
-    public func async(_ block: @escaping () -> Void) -> WorkQueueCancellableItem {
+    public func async(_ block: @escaping () -> Void) -> WorkQueueItem {
         let op = Operation()
         op.name = "\(Self.self).\(#function).\(#line)"
         op.completionBlock = block
         self.operationQueue.addOperation(block)
 
-        return WorkQueueOperationCancellableItem(operation: op)
+        return WorkQueueOperationItem(operation: op)
     }
 }

@@ -26,9 +26,6 @@ public class WorkQueueRunLoopItem: WorkQueueItem {
     public var isFinished: Bool {
         return self.state.isFinished
     }
-}
-
-public class WorkQueueRunLoopCancellableItem: WorkQueueRunLoopItem, WorkQueueCancellableItem {
 
     public func cancel() {
         self.timer.invalidate()
@@ -41,6 +38,4 @@ public class WorkQueueRunLoopCancellableItem: WorkQueueRunLoopItem, WorkQueueCan
 
         return self.timer.isValid
     }
-
 }
-

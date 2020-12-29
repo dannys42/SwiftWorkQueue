@@ -18,30 +18,12 @@ public class WorkQueueRunLoop: WorkQueue {
     }
 
     public func async(_ block: @escaping () -> Void) -> WorkQueueItem {
-        let item: WorkQueueCancellableItem
-
-        item = self.async(block)
-
-        return item
-    }
-
-    public func async(_ block: @escaping () -> Void) -> WorkQueueCancellableItem {
         return self.asyncAfter(timeInterval: 0, execute: block)
     }
 }
 
-extension WorkQueueRunLoop: WorkQueueCancellable {
-    
-}
-
 extension WorkQueueRunLoop: WorkQueueDeferrable {
     public func asyncAfter(timeInterval: TimeInterval, execute block: @escaping () -> Void) -> WorkQueueItem {
-        let item: WorkQueueCancellableItem
-        item = self.asyncAfter(timeInterval: timeInterval, execute: block)
-        return item
-    }
-
-    public func asyncAfter(timeInterval: TimeInterval, execute block: @escaping () -> Void) -> WorkQueueCancellableItem {
         let state = WorkQueueItemState()
         let timer = Timer(timeInterval: timeInterval, repeats: false) { (_) in
             state.isExecuting = true
@@ -49,7 +31,7 @@ extension WorkQueueRunLoop: WorkQueueDeferrable {
             state.isFinished = true
             state.isExecuting = false
         }
-        let workQueueItem = WorkQueueRunLoopCancellableItem(runLoop: self.runLoop, state: state, timer: timer)
+        let workQueueItem = WorkQueueRunLoopItem(runLoop: self.runLoop, state: state, timer: timer)
         self.runLoop.add(timer, forMode: self.mode)
         return workQueueItem
     }
