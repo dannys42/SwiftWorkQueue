@@ -9,9 +9,12 @@ import Foundation
 import NIO
 import WorkQueue
 
+/// `WorkQueueNIO` is a `WorkQueue` implementation that executes deferred code in a NIO `EventLoop`
 public class WorkQueueNIO: WorkQueue {
     public let eventLoop: EventLoop
 
+    /// Initialize with a specified NIO `EventLoop`
+    /// - Parameter eventLoop: `EventLoop` to use
     required public init(eventLoop: EventLoop) {
         self.eventLoop = eventLoop
     }

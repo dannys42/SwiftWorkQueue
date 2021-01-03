@@ -8,10 +8,15 @@
 import Foundation
 import WorkQueue
 
+/// `WorkQueueRunLoop` is a `WorkQueue` implementation that executes deferred code in a `RunLoop`
 public class WorkQueueRunLoop: WorkQueue {
     public let runLoop: RunLoop
     public let mode: RunLoop.Mode
 
+    /// Specifies this `WorkQueue` relies on the given `RunLoop`
+    /// - Parameter operationQueue: `OperationQueue` to use
+    /// - Parameter runLoop: `RunLoop` to use
+    /// - Parameter mode: `RunLoop.Mode` to use (default: .default)
     required public init(runLoop: RunLoop, mode: RunLoop.Mode = .default) {
         self.runLoop = runLoop
         self.mode = mode

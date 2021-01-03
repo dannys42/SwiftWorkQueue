@@ -11,6 +11,7 @@ import WorkQueue
 
 public class WorkQueueOperationItem: WorkQueueItem {
     public let operation: Operation
+
     public init(operation: Operation) {
         self.operation = operation
     }
@@ -34,13 +35,18 @@ public class WorkQueueOperationItem: WorkQueueItem {
 
 }
 
+/// `WorkQueueOperation` is a `WorkQueue` implementation that executes deferred code in a `OperationQueue`
 public class WorkQueueOperation: WorkQueue {
     public let operationQueue: OperationQueue
 
+    /// Specifies this `WorkQueue` relies on the given `OperationQueue`
+    /// - Parameter operationQueue: `OperationQueue` to use
     required public init(operationQueue: OperationQueue) {
         self.operationQueue = operationQueue
     }
 
+    /// Creates a `WorkQueue` with a custom `OperationQueue`
+    /// - Parameter label: Label to use with the `OperationQueue`
     convenience init(label: String) {
         let opQ = OperationQueue()
         opQ.name = label
